@@ -1,6 +1,7 @@
 //@ts-check
 
 const difficulty = 3 + Math.floor(Math.random() * 3);
+const hexDisplayWidth = 16;
 
 function main() {
     const corpus = corpusElement.textContent.split("\n\n").filter(x => x.length > 100 && x.length < 300);
@@ -18,7 +19,7 @@ function main() {
      */
     function updateDisplay(enteredKey) {
         puzzleViewer.innerHTML = "";
-        puzzleViewer.append(PuzzleHexViewer.html(Puzzle.encode(puzzle.getEncoded(), enteredKey), 12));
+        puzzleViewer.append(PuzzleHexViewer.html(Puzzle.encode(puzzle.getEncoded(), enteredKey), hexDisplayWidth));
     }
 
     updateDisplay(new Uint8Array([0]));
@@ -172,7 +173,11 @@ class PuzzleHexViewer {
         const n = bytes.length;
         const out = document.createElement("pre");
 
+        let indexWidth = (n - (n % bytesPerLine)).toString(16).length;
+
         for (let i = 0; i < n;) {
+            let rowIndex = i.toString(16).padStart(indexWidth, '0');
+
             /**
              * @type (string | HTMLSpanElement)[]
              */
@@ -187,7 +192,7 @@ class PuzzleHexViewer {
 
                 {
                     const hexSpan = document.createElement("span");
-                    hexSpan.textContent = toHexPair(char) + " ";
+                    hexSpan.textContent = toHexPair(char) + (j % 2 ? ' ' : '');
                     hexSpan.classList.add(tag);
                     hex.push(hexSpan);
                 }
@@ -195,7 +200,7 @@ class PuzzleHexViewer {
                 {
                     const textSpan = document.createElement("span");
                     textSpan.classList.add(tag);
-                    textSpan.textContent = tag == "hex-readable" ? String.fromCharCode(char) : ".";
+                    textSpan.textContent = tag == "color-green" ? String.fromCharCode(char) : ".";
                     text.push(textSpan);
                 }
             }
@@ -204,7 +209,7 @@ class PuzzleHexViewer {
                 hex.push("   ");
             }
 
-            out.append(...hex, ...text, "\n");
+            out.append(rowIndex, ': ', ...hex, " ", ...text, "\n");
         }
 
         return out;
@@ -215,10 +220,11 @@ class PuzzleHexViewer {
      * @param {number} char character code
      */
     static colorTag(char) {
-        if (char == 0) return "hex-00";
-        if (char == 255) return "hex-ff";
-        if (char >= 32 && char <= 128) return "hex-readable";
-        return "hex-unreadable";
+        if (char == 0) return "color-white"; // intentionally omitted in css
+        if (char == 255) return "color-blue";
+        if (char in [37, 13, 5]) return "color-yellow";
+        if (char >= 32 && char <= 128) return "color-green";
+        return "color-red";
     }
 }
 

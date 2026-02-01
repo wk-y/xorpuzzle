@@ -4,16 +4,21 @@
         color: white;
     }
 }
-.hex-readable {
+
+.color-blue {
+    color: blue;
+}
+
+.color-yellow {
+    color: yellow;
+}
+
+.color-green {
     color: green;
 }
 
-.hex-unreadable {
+.color-red {
     color: red;
-}
-
-.hex-ff {
-    color: blue;
 }
 
 #corpus {
