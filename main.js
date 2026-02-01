@@ -29,8 +29,20 @@ function main() {
         const input = getPuzzleInput();
         if (input == null) throw "invalid input";
 
+        if (input.toString() == puzzle.key.toString()) {
+            winGame();
+        }
+
         updateDisplay(input);
     });
+}
+
+function winGame() {
+    for (const element of puzzleForm.elements) {
+        element.setAttribute("disabled", "");
+    }
+
+    puzzleForm.append("You won!");
 }
 
 /**
@@ -197,4 +209,4 @@ class PuzzleHexViewer {
     }
 }
 
-main()
+main();

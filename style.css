@@ -1,13 +1,15 @@
+@media (prefers-color-scheme: dark) {
+    :root {
+        background-color: black;
+        color: white;
+    }
+}
 .hex-readable {
     color: green;
 }
 
 .hex-unreadable {
     color: red;
-}
-
-.hex-00 {
-    color: black;
 }
 
 .hex-ff {
