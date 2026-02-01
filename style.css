@@ -1,0 +1,19 @@
+.hex-readable {
+    color: green;
+}
+
+.hex-unreadable {
+    color: red;
+}
+
+.hex-00 {
+    color: black;
+}
+
+.hex-ff {
+    color: blue;
+}
+
+#corpus {
+    display: none;
+}
