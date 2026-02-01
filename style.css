@@ -24,3 +24,11 @@
 #corpus {
     display: none;
 }
+
+.game-won {
+    background: green;
+}
+
+.game-won .color-green {
+    color: inherit;;
+}

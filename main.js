@@ -52,6 +52,8 @@ function winGame() {
         element.setAttribute("disabled", "");
     }
 
+    document.body.classList.add("game-won");
+
     puzzleForm.append("You won!");
 }
 
