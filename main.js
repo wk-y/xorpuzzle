@@ -33,6 +33,13 @@ function main() {
             winGame();
         }
 
+        const guessParagraph = document.createElement("p");
+        const guessPre = document.createElement("pre");
+        guessPre.append([...input].map(toHexPair).join(" "));
+        guessParagraph.append(guessPre);
+
+        guessLog.appendChild(guessParagraph);
+
         updateDisplay(input);
     });
 }
@@ -68,6 +75,12 @@ const puzzleForm = document.getElementById("puzzleForm");
  */
 // @ts-ignore
 const corpusElement = document.getElementById("corpus");
+
+/**
+ * @type HTMLDetailsElement
+ */
+// @ts-ignore
+const guessLog = document.getElementById("guessLog");
 
 function getPuzzleInput() {
     /**
@@ -174,7 +187,7 @@ class PuzzleHexViewer {
 
                 {
                     const hexSpan = document.createElement("span");
-                    hexSpan.textContent = char.toString(16).padStart(2, "0") + " ";
+                    hexSpan.textContent = toHexPair(char) + " ";
                     hexSpan.classList.add(tag);
                     hex.push(hexSpan);
                 }
@@ -208,5 +221,14 @@ class PuzzleHexViewer {
         return "hex-unreadable";
     }
 }
+
+/**
+ * Get the pair of hex digits representing `char`
+ * @param {number} char A byte from 0 to 255
+ */
+function toHexPair(char) {
+    return char.toString(16).padStart(2, "0");
+}
+
 
 main();
