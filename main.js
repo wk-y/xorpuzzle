@@ -1,9 +1,9 @@
 //@ts-check
 
-const difficulty = 1;
+const difficulty = 3 + Math.floor(Math.random() * 3);
 
 function main() {
-    const corpus = corpusElement.textContent.split("\n\n").filter(x => x.length < 100);
+    const corpus = corpusElement.textContent.split("\n\n").filter(x => x.length > 100 && x.length < 300);
     const puzzleIndex = Math.floor(Math.random() * corpus.length);
     const puzzleKey = new Uint8Array(difficulty);
     for (let i = 0; i < difficulty; i++) {

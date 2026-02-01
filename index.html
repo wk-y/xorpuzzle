@@ -7,8 +7,18 @@
 </head>
 
 <body>
+    <details>
+        <summary>How to play</summary>
+        <p>
+            Below the input is text encoded with an <a href="https://en.wikipedia.org/wiki/XOR_cipher">XOR Cipher</a>.
+            Input guesses for the key into the input box and hit guess (or hit enter on your keyboard).
+            The text will change to the text decoded using the entered key.
+            The goal is to use the correct key, revealing the original text.
+        </p>
+        <p><a href="https://www.gutenberg.org/ebooks/11">Text is from Alice's Adventures in Wonderland.</a></p>
+    </details>
     <form id="puzzleForm">
-        <input type="text" id="puzzleInput">
+        <input type="text" id="puzzleInput" placeholder="feedface">
         <button type="submit">Guess</button>
     </form>
     <div id="puzzleViewer"></div>
