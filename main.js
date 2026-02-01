@@ -225,7 +225,7 @@ class PuzzleHexViewer {
         if (char == 0) return "color-white"; // intentionally omitted in css
         if (char == 255) return "color-blue";
         if (char in [37, 13, 5]) return "color-yellow";
-        if (char >= 32 && char <= 128) return "color-green";
+        if (char >= 32 && char <= 126) return "color-green";
         return "color-red";
     }
 }
