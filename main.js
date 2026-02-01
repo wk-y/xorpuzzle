@@ -4,7 +4,9 @@ const difficulty = 3 + Math.floor(Math.random() * 3);
 const hexDisplayWidth = 16;
 
 function main() {
-    const corpus = corpusElement.textContent.split("\n\n").filter(x => x.length > 100 && x.length < 300);
+    const corpus = corpusElement.textContent.split("\n\n").filter(x => x.length > 256);
+    console.info("Corpus size: ", corpus.length);
+
     const puzzleIndex = Math.floor(Math.random() * corpus.length);
     const puzzleKey = new Uint8Array(difficulty);
     for (let i = 0; i < difficulty; i++) {
