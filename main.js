@@ -18,7 +18,7 @@ function main() {
      */
     function updateDisplay(enteredKey) {
         puzzleViewer.innerHTML = "";
-        puzzleViewer.append(PuzzleHexViewer.html(Puzzle.encode(puzzle.getEncoded(), enteredKey), 16));
+        puzzleViewer.append(PuzzleHexViewer.html(Puzzle.encode(puzzle.getEncoded(), enteredKey), 12));
     }
 
     updateDisplay(new Uint8Array([0]));
