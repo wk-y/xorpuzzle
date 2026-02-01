@@ -1,6 +1,6 @@
 //@ts-check
 
-const difficulty = 3 + Math.floor(Math.random() * 3);
+const difficulty = 4; // 3 + Math.floor(Math.random() * 3);
 const hexDisplayWidth = 16;
 
 function main() {
