@@ -1,15 +1,48 @@
 //@ts-check
 
-const difficulty = 4; // 3 + Math.floor(Math.random() * 3);
+const nameHeading = document.getElementById("nameHeading");
+
+/**
+ * @type ("easy" | "medium" | "hard")
+ */
+let difficulty = "medium";
+{
+    const search = new URLSearchParams(window.location.search);
+    const searchDifficulty = search.get("difficulty");
+    switch (searchDifficulty) {
+        case "easy":
+            difficulty = "easy";
+            nameHeading?.append(" (Easy)");
+            break;
+        case "hard":
+            difficulty = "hard";
+            nameHeading?.append(" (Hard)");
+            break;
+    }
+}
+console.info("Difficulty: ", difficulty);
+
 const hexDisplayWidth = 16;
 
 function main() {
+    const numChars = (() => {
+        switch (difficulty) {
+            case "easy": return 1;
+            case "medium": return 4;
+            case "hard": return 5 + Math.floor(Math.random() * 3);
+        }
+    })();
+
+    if (difficulty == "hard") {
+        document.body.classList.remove("highlight");
+    }
+
     const corpus = corpusElement.textContent.split("\n\n").filter(x => x.length > 256);
     console.info("Corpus size: ", corpus.length);
 
     const puzzleIndex = Math.floor(Math.random() * corpus.length);
-    const puzzleKey = new Uint8Array(difficulty);
-    for (let i = 0; i < difficulty; i++) {
+    const puzzleKey = new Uint8Array(numChars);
+    for (let i = 0; i < numChars; i++) {
         puzzleKey[i] = Math.floor(Math.random() * 256);
     }
 

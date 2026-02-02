@@ -4,11 +4,11 @@
         color: white;
     }
 
-    .color-white {
+    .highlight .color-white {
         color: white;
     }
 
-    .color-yellow {
+    .highlight .color-yellow {
         color: yellow;
     }
 }
@@ -18,23 +18,23 @@
     color: black;
 }
 
-.color-blue {
+.highlight .color-blue {
     color: blue;
 }
 
-.color-yellow {
+.highlight .color-yellow {
     color: #880;
 }
 
-.color-green {
+.highlight .color-green {
     color: green;
 }
 
-.color-red {
+.highlight .color-red {
     color: red;
 }
 
-.color-white {
+.highlight .color-white {
     color: black;
 }
 
@@ -46,6 +46,6 @@
     background: green;
 }
 
-.game-won .color-green {
+.highlight.game-won .color-green {
     color: inherit;
 }
