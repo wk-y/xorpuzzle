@@ -3,6 +3,19 @@
         background-color: black;
         color: white;
     }
+
+    .color-white {
+        color: white;
+    }
+
+    .color-yellow {
+        color: yellow;
+    }
+}
+
+:root {
+    background: white;
+    color: black;
 }
 
 .color-blue {
@@ -10,7 +23,7 @@
 }
 
 .color-yellow {
-    color: yellow;
+    color: #880;
 }
 
 .color-green {
@@ -19,6 +32,10 @@
 
 .color-red {
     color: red;
+}
+
+.color-white {
+    color: black;
 }
 
 #corpus {
@@ -30,5 +47,5 @@
 }
 
 .game-won .color-green {
-    color: inherit;;
+    color: inherit;
 }

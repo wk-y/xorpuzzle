@@ -18,6 +18,7 @@
             The text will change to the text decoded using the entered key.
             The goal is to use the correct key, revealing the original text.
             The color scheme follows that of xxd.
+            When you win the page will turn green.
         </p>
         <p>
             <a href="https://www.gutenberg.org/ebooks/11">Text is from Alice's Adventures in Wonderland, in the public
@@ -29,16 +30,15 @@
     <details>
         <summary>Tips and tricks</summary>
         <p>
-            Red, white, and blue colors are outside the range of ASCII.
-            Generally they should not be present.
-            However, Alice in Wonderland does contain some Unicode characters!
-            Some red may still be correct.
+            <span class="color-green">Green</span> and <span class="color-yellow">yellow</span> are ASCII text.
+            Generally the solved puzzle will be all green and yellow (and also be intelligible English).
+            However, Alice in Wonderland contains some unicode characters,
+            so just because some bytes are red doesn't mean it is necessarily wrong.
         </p>
         <p>
             Try frequency analysis: the most common character codes are 0x65 (e) and 0x74 (t).
             Capital letters and lowercase letters differ by 0x20.
         </p>
-        <p>
     </details>
     <details id="guessLog">
         <summary>Guess Log</summary>
