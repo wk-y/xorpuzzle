@@ -43,7 +43,11 @@ function main() {
     const puzzleIndex = Math.floor(Math.random() * corpus.length);
     const puzzleKey = new Uint8Array(numChars);
     for (let i = 0; i < numChars; i++) {
-        puzzleKey[i] = Math.floor(Math.random() * 256);
+        for (; ;) {
+            const byte = puzzleKey[i] = Math.floor(Math.random() * 256);
+            if (byte == 0 || byte == 0x20) continue; // no freebies!
+            break;
+        }
     }
 
     let puzzle = new Puzzle(corpus[puzzleIndex], puzzleKey);
