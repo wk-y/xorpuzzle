@@ -20,7 +20,7 @@ let difficulty = {
     keyGenerator: () => generateRandomKey(4),
     highlighting: true,
     textReadout: true,
-    textInput: true,
+    textInput: false,
 };
 {
     const search = new URLSearchParams(window.location.search);
