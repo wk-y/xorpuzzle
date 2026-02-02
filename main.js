@@ -37,7 +37,7 @@ function main() {
         switch (difficulty) {
             case "easy": return generateRandomKey(1);
             case "medium": return generateRandomKey(4);
-            case "hard": return generateRandomKey(5 + Math.floor(Math.random() * 3));
+            case "hard": return generateRandomKey(5 + Math.floor(Math.random() * 4));
             case "lexicon": return new TextEncoder().encode(randomWord());
         }
     })();
