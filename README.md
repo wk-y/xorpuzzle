@@ -25,9 +25,9 @@ Hard mode is even harder.
 The key can be anywhere from five to eight bytes.
 Color coding of bytes is disabled.
 
-## [Cypher's Mode](https://xorpuzzle.pages.dev/?difficulty=matrix)
+## [Cypher's Mode](https://xorpuzzle.pages.dev/?difficulty=cypher)
 
-Matrix mode is the hardest game mode.
+Cypher's mode is the hardest game mode.
 It plays the same as Hard Mode, except the text readout is turned off.
 Only the hexadecimal codes will be displayed.
 
