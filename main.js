@@ -3,7 +3,11 @@
 const nameHeading = document.getElementById("nameHeading");
 
 /**
- * @type ("easy" | "medium" | "hard")
+ * @typedef {("easy" | "medium" | "hard" | "lexicon")} Difficulty
+ */
+
+/**
+ * @type Difficulty
  */
 let difficulty = "medium";
 {
@@ -18,6 +22,10 @@ let difficulty = "medium";
             difficulty = "hard";
             nameHeading?.append(" (Hard)");
             break;
+        case "lexicon":
+            difficulty = "lexicon";
+            nameHeading?.append(" (Lexicon Mode)");
+            break;
     }
 }
 console.info("Difficulty: ", difficulty);
@@ -25,11 +33,12 @@ console.info("Difficulty: ", difficulty);
 const hexDisplayWidth = 16;
 
 function main() {
-    const numChars = (() => {
+    const puzzleKey = (() => {
         switch (difficulty) {
-            case "easy": return 1;
-            case "medium": return 4;
-            case "hard": return 5 + Math.floor(Math.random() * 3);
+            case "easy": return generateRandomKey(1);
+            case "medium": return generateRandomKey(4);
+            case "hard": return generateRandomKey(5 + Math.floor(Math.random() * 3));
+            case "lexicon": return new TextEncoder().encode(randomWord());
         }
     })();
 
@@ -37,19 +46,11 @@ function main() {
         document.body.classList.remove("highlight");
     }
 
-    const corpus = corpusElement.textContent.split("\n\n").filter(x => x.length > 256);
-    console.info("Corpus size: ", corpus.length);
-
-    const puzzleIndex = Math.floor(Math.random() * corpus.length);
-    const puzzleKey = new Uint8Array(numChars);
-    for (let i = 0; i < numChars; i++) {
-        for (; ;) {
-            const byte = puzzleKey[i] = Math.floor(Math.random() * 256);
-            if (byte == 0 || byte == 0x20) continue; // no freebies!
-            break;
-        }
+    if (difficulty == "lexicon") {
+        puzzleInput.setAttribute("placeholder", "Alice");
     }
 
+    const puzzleIndex = Math.floor(Math.random() * corpus.length);
     let puzzle = new Puzzle(corpus[puzzleIndex], puzzleKey);
 
     /**
@@ -82,6 +83,39 @@ function main() {
 
         updateDisplay(input);
     });
+}
+
+/**
+ * 
+ * @param {number} length
+ */
+function generateRandomKey(length) {
+    const key = new Uint8Array(length);
+
+    for (let i = 0; i < length; i++) {
+        for (; ;) {
+            const byte = key[i] = Math.floor(Math.random() * 256);
+            if (byte == 0 || byte == 0x20) continue; // no freebies!
+            break;
+        }
+    }
+
+    return key;
+}
+
+function randomWord() {
+    /**
+     * @type Set<string>
+     */
+    const set = new Set();
+    for (const match of corpusElement.textContent.matchAll(/[A-z]{3,}/g)) {
+        set.add(match[0]);
+    }
+
+    const lexicon = [...set.keys()];
+    console.info("Lexicon: ", lexicon);
+
+    return lexicon[Math.floor(Math.random() * lexicon.length)];
 }
 
 function winGame() {
@@ -117,6 +151,8 @@ const puzzleForm = document.getElementById("puzzleForm");
  */
 // @ts-ignore
 const corpusElement = document.getElementById("corpus");
+const corpus = corpusElement.textContent.split("\n\n").filter(x => x.length > 256);
+console.info("Corpus size: ", corpus.length);
 
 /**
  * @type HTMLDetailsElement
@@ -125,6 +161,11 @@ const corpusElement = document.getElementById("corpus");
 const guessLog = document.getElementById("guessLog");
 
 function getPuzzleInput() {
+    if (difficulty == "lexicon") {
+        if (puzzleInput.value == "") return null;
+        return new TextEncoder().encode(puzzleInput.value);
+    }
+
     /**
      * @type number[]
      */
@@ -149,15 +190,25 @@ function getPuzzleInput() {
 
     if (digit != 0) return null;
 
+    if (out.length == 0) return null;
+
     return new Uint8Array(out);
 }
 
-puzzleInput.addEventListener("input", () => {
+function updatePuzzleInputValidity() {
     puzzleInput.setCustomValidity("");
-    if (!getPuzzleInput()) {
-        puzzleInput.setCustomValidity("Enter a valid hex!");
+    const input = getPuzzleInput();
+    if (!input) {
+        puzzleInput.setCustomValidity(
+            difficulty == "lexicon"
+                ? "Enter some text"
+                : "Enter valid hex"
+        );
     }
-});
+};
+
+puzzleInput.addEventListener("input", updatePuzzleInputValidity);
+updatePuzzleInputValidity();
 
 class Puzzle {
     static #encoder = new TextEncoder();
