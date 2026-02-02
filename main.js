@@ -3,27 +3,70 @@
 const nameHeading = document.getElementById("nameHeading");
 
 /**
- * @typedef {("easy" | "medium" | "hard" | "lexicon")} Difficulty
+ * @typedef {({
+ *   name: string,
+ *   keyGenerator: function(): Uint8Array,
+ *   highlighting: boolean,
+ *   textReadout: boolean,
+ *   textInput: boolean,
+ * })} Difficulty
  */
 
 /**
  * @type Difficulty
  */
-let difficulty = "medium";
+let difficulty = {
+    name: "Standard",
+    keyGenerator: () => generateRandomKey(4),
+    highlighting: true,
+    textReadout: true,
+    textInput: true,
+};
 {
     const search = new URLSearchParams(window.location.search);
     const searchDifficulty = search.get("difficulty");
     switch (searchDifficulty) {
         case "easy":
-            difficulty = "easy";
+            difficulty = {
+                name: "Easy",
+                keyGenerator: () => generateRandomKey(1),
+                highlighting: true,
+                textReadout: true,
+                textInput: false,
+            };
             nameHeading?.append(" (Easy)");
             break;
+
         case "hard":
-            difficulty = "hard";
+            difficulty = {
+                name: "Hard",
+                keyGenerator: () => generateRandomKey(5 + Math.floor(Math.random() * 4)),
+                highlighting: false,
+                textReadout: true,
+                textInput: false,
+            };
             nameHeading?.append(" (Hard)");
             break;
+
+        case "cypher":
+            difficulty = {
+                name: "Cypher's Mode",
+                keyGenerator: () => generateRandomKey(5 + Math.floor(Math.random() * 4)),
+                highlighting: false,
+                textReadout: false,
+                textInput: false,
+            };
+            nameHeading?.append(" (Cypher's Mode)");
+            break;
+
         case "lexicon":
-            difficulty = "lexicon";
+            difficulty = {
+                name: "Lexicon",
+                keyGenerator: () => new TextEncoder().encode(randomWord()),
+                highlighting: true,
+                textReadout: true,
+                textInput: true,
+            };
             nameHeading?.append(" (Lexicon Mode)");
             break;
     }
@@ -33,20 +76,13 @@ console.info("Difficulty: ", difficulty);
 const hexDisplayWidth = 16;
 
 function main() {
-    const puzzleKey = (() => {
-        switch (difficulty) {
-            case "easy": return generateRandomKey(1);
-            case "medium": return generateRandomKey(4);
-            case "hard": return generateRandomKey(5 + Math.floor(Math.random() * 4));
-            case "lexicon": return new TextEncoder().encode(randomWord());
-        }
-    })();
+    const puzzleKey = difficulty.keyGenerator();
 
-    if (difficulty == "hard") {
+    if (!difficulty.highlighting) {
         document.body.classList.remove("highlight");
     }
 
-    if (difficulty == "lexicon") {
+    if (difficulty.textInput) {
         puzzleInput.setAttribute("placeholder", "Alice");
     }
 
@@ -161,7 +197,7 @@ console.info("Corpus size: ", corpus.length);
 const guessLog = document.getElementById("guessLog");
 
 function getPuzzleInput() {
-    if (difficulty == "lexicon") {
+    if (difficulty.textInput) {
         if (puzzleInput.value == "") return null;
         return new TextEncoder().encode(puzzleInput.value);
     }
@@ -200,7 +236,7 @@ function updatePuzzleInputValidity() {
     const input = getPuzzleInput();
     if (!input) {
         puzzleInput.setCustomValidity(
-            difficulty == "lexicon"
+            difficulty.textInput
                 ? "Enter some text"
                 : "Enter valid hex"
         );
@@ -301,7 +337,9 @@ class PuzzleHexViewer {
                 hex.push("   ");
             }
 
-            out.append(rowIndex, ': ', ...hex, " ", ...text, "\n");
+            out.append(rowIndex, ': ', ...hex);
+            if (difficulty.textReadout) out.append(" ", ...text);
+            out.append("\n");
         }
 
         return out;
