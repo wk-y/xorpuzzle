@@ -16,10 +16,18 @@
         <p>
             Below the input is text encoded with an <a href="https://en.wikipedia.org/wiki/XOR_cipher">XOR Cipher</a>.
             Input guesses for the key into the input box and hit guess (or hit enter on your keyboard).
+            Input should be hexadecimal, without any prefix (no 0x prefix).
+            If you are playing Lexicon mode, you will be entering characters, not hexadecimal.
             The text will change to the text decoded using the entered key.
             The goal is to use the correct key, revealing the original text.
             The color scheme follows that of xxd.
             When you win the page will turn green.
+        </p>
+        <p>
+            <span class="color-green">Green</span> and <span class="color-yellow">yellow</span> are ASCII text.
+            Generally the solved puzzle will be all green and yellow (and also be intelligible English).
+            However, Alice in Wonderland contains some unicode characters,
+            so just because some bytes are red doesn't mean it is necessarily wrong.
         </p>
         <p>
             <a href="https://www.gutenberg.org/ebooks/11">Text is from Alice's Adventures in Wonderland, in the public
@@ -27,7 +35,7 @@
         </p>
     </details>
     <details>
-        <summary>Difficulty</summary>
+        <summary>Difficulty/Mode</summary>
         </p>
         <ul>
             <li><a href="?difficulty=lexicon">Lexicon Mode - The key is a random word. Input text instead of hex.</a>
@@ -39,16 +47,32 @@
         </ul>
     </details>
     <details>
-        <summary>Tips and tricks</summary>
+        <summary>Strategy Guide</summary>
         <p>
-            <span class="color-green">Green</span> and <span class="color-yellow">yellow</span> are ASCII text.
-            Generally the solved puzzle will be all green and yellow (and also be intelligible English).
-            However, Alice in Wonderland contains some unicode characters,
-            so just because some bytes are red doesn't mean it is necessarily wrong.
+            In this guide, assume all numbers are hexadecimal unless otherwise mentioned.
         </p>
         <p>
-            Try frequency analysis: the most common character codes are 0x65 (e) and 0x74 (t).
-            Capital letters and lowercase letters differ by 0x20.
+            For all difficulties, the strategy is to identify the most common byte.
+            Assume that byte corresponds to space (20) in the plaintext.
+            If you are skilled at mental bit manipulation, you can directly compute the key.
+            Otherwise, you can enter 20, producing the key.
+            The math is as follows: (20 xor KEY) xor 20 = 20 xor 20 xor KEY = KEY.
+        </p>
+        <p>
+            If you are playing easy mode, you should hopefully get the correct key and win.
+            In normal and hard mode, you will now need to guess the other characters of the key.
+            Note that with longer keys, each byte of the key is used to encrypt fewer characters.
+            Identifying which character corresponds to space thus becomes tricky.
+        </p>
+        <p>
+            Assuming you have cracked one byte of the key, there is a trick to find another byte.
+            In English, capital letters are always at the start of a word.
+            Thus the previous character will be a space (or if you are unlucky, a newline).
+            Among the letters decrypted by the known byte, find the capital letters.
+            The most common preceding byte is likely to be a space.
+            You can then calculate the byte required to decrypt that byte into a space.
+            Once you identify two or three bytes of the key, you can hopefully make out parts of words.
+            Repeat the strategy until all bytes of the key have been identified.
         </p>
     </details>
     <details id="guessLog">
